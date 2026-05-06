@@ -3,15 +3,16 @@ import {
   login,
   logout,
   refresh,
-  registration,
+  register,
   verify,
 } from "../controller/auth.controller.js";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = new Router();
 
-router.post("/registration", registration);
+router.post("/registration", register);
 router.post("/login", login);
-router.post("/logout", logout);
+router.post("/logout", authMiddleware, logout);
 router.get("/refresh", refresh);
 router.get("/verify/:token", verify);
 

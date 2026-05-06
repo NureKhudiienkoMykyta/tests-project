@@ -19,19 +19,20 @@ model University {
 }
 
 model User {
-  id                 Int            @id @default(autoincrement())
-  email              String         @unique
+  id                 Int         @id @default(autoincrement())
+  email              String      @unique
   password_hash      String
   first_name         String
   last_name          String
-  is_activated       Boolean        @default(false)
+  is_activated       Boolean     @default(false)
   email_verify_token String?
-  role               Role           @default(common_user)
-  created_at         DateTime       @default(now())
-  updated_at         DateTime       @updatedAt
-  refreshTokens      RefreshToken[]
+  role               Role        @default(common_user)
+  created_at         DateTime    @default(now())
+  updated_at         DateTime    @updatedAt
   university_id      Int?
-  university         University?    @relation(fields: [university_id], references: [id], onDelete: SetNull)
+  university         University? @relation(fields: [university_id], references: [id], onDelete: SetNull)
+
+  refreshTokens RefreshToken[]
 }
 
 model RefreshToken {
