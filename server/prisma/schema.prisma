@@ -16,6 +16,7 @@ model University {
   name String
 
   users User[]
+  tests Test[]
 }
 
 model User {
@@ -33,6 +34,7 @@ model User {
   university         University? @relation(fields: [university_id], references: [id], onDelete: SetNull)
 
   refreshTokens RefreshToken[]
+  created_tests Test[]
 }
 
 model RefreshToken {
@@ -43,7 +45,95 @@ model RefreshToken {
   user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
+model Test {
+  id                 Int             @id @default(autoincrement())
+  author_id          Int
+  author             User            @relation(fields: [author_id], references: [id])
+  university_id      Int?
+  university         University?     @relation(fields: [university_id], references: [id], onDelete: SetNull)
+  category_id        Int
+  category           Category        @relation(fields: [category_id], references: [id])
+  title              String
+  description        String
+  is_published       Boolean         @default(false)
+  access_mode        TestAccessType  @default(PUBLIC)
+  show_results       ShowResultsType @default(FULL)
+  time_limit_seccond Int?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  questions            Question[]
+  allowed_test_domains AllowedTestDomain[]
+  allowed_test_emails  AllowedTestEmail[]
+}
+
+model Category {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  name       String
+
+  tests Test[]
+}
+
+model Question {
+  id             Int          @id @default(autoincrement())
+  test_id        Int
+  test           Test         @relation(fields: [test_id], references: [id], onDelete: Cascade)
+  type           QuestionType
+  content        String
+  points         Int
+  correct_answer String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  answers Answer[]
+}
+
+model Answer {
+  id          Int      @id @default(autoincrement())
+  content     String
+  is_correct  Boolean  @default(false)
+  question_id Int
+  question    Question @relation(fields: [question_id], references: [id], onDelete: Cascade)
+}
+
+model AllowedTestDomain {
+  id      Int    @id @default(autoincrement())
+  test_id Int
+  test    Test   @relation(fields: [test_id], references: [id], onDelete: Cascade)
+  domain  String
+}
+
+model AllowedTestEmail {
+  id      Int    @id @default(autoincrement())
+  test_id Int
+  test    Test   @relation(fields: [test_id], references: [id], onDelete: Cascade)
+  email   String
+}
+
 enum Role {
   admin
   common_user
+}
+
+enum TestAccessType {
+  PUBLIC
+  DOMAIN
+  EMAIL_LIST
+}
+
+enum ShowResultsType {
+  FULL
+  ONLY_SCORE
+}
+
+enum QuestionType {
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  SHORT_TEXT
+  LONG_TEXT
+  NUMBER
 }
