@@ -3,8 +3,10 @@ import {
   createTest,
   deleteTest,
   getMyTests,
+  getTestForEdit,
   getTestInformationById,
   getTests,
+  updateTest,
 } from "../service/test.service.js";
 
 export const createTestController = async (req, res, next) => {
@@ -147,6 +149,38 @@ export const getMyTestsControoler = async (req, res, next) => {
     const tests = await getMyTests(userId, page, limit);
 
     return res.status(200).json({ data: tests });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getTestForEditController = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const testId = Number(req.params.id);
+
+    if (!Number.isInteger(testId) || testId <= 0) {
+      return next(
+        ApiError.badRequest("Неправильний формат ідентифікатора тесту"),
+      );
+    }
+
+    const testData = await getTestForEdit(userId, testId);
+
+    return res.status(200).json({ data: testData });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateTestController = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const testId = req.params.id;
+
+    const updatedTest = await updateTest(userId, testId, req.body);
+
+    return res.status(200).json({ data: updatedTest });
   } catch (error) {
     next(error);
   }
