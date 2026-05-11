@@ -338,3 +338,169 @@ export const deleteTest = async (authorId, testId) => {
 
   return deletedTest;
 };
+
+export const getTestInformationById = async (testId) => {
+  const testData = await prisma.test.findUnique({
+    where: {
+      id: testId,
+    },
+    include: {
+      category: true,
+      university: true,
+      author: {
+        select: {
+          id: true,
+          first_name: true,
+          last_name: true,
+        },
+      },
+      allowed_test_domains: {
+        select: {
+          domain: true,
+        },
+      },
+      _count: {
+        select: {
+          questions: true,
+        },
+      },
+    },
+  });
+
+  if (!testData) {
+    throw ApiError.notFound("Тесту не існує");
+  }
+
+  return {
+    id: testData.id,
+    title: testData.title,
+    description: testData.description,
+    accessMode: testData.access_mode,
+    allowedDomains: testData.allowed_test_domains,
+    showResults: testData.show_results,
+    timeLimitSecond: testData.time_limit_seccond,
+    createdAt: testData.created_at,
+    questionsCount: testData._count.questions,
+    author: testData.author,
+    category: testData.category,
+    university: testData.university,
+  };
+};
+
+export const getTests = async (
+  page = 1,
+  limit = 20,
+
+  search,
+  categoryId,
+  universityId,
+
+  sortBy = "newest",
+) => {
+  const where = {
+    is_published: true,
+  };
+
+  if (search) {
+    where.title = {
+      contains: search,
+      mode: "insensitive",
+    };
+  }
+
+  if (categoryId) {
+    where.category_id = categoryId;
+  }
+
+  if (universityId) {
+    where.university_id = universityId;
+  }
+
+  let orderBy = {
+    created_at: "desc",
+  };
+
+  if (sortBy === "oldest") {
+    orderBy = {
+      created_at: "asc",
+    };
+  }
+
+  const tests = await prisma.test.findMany({
+    where,
+
+    include: {
+      category: true,
+      university: true,
+
+      author: {
+        select: {
+          id: true,
+          first_name: true,
+          last_name: true,
+        },
+      },
+
+      _count: {
+        select: {
+          questions: true,
+        },
+      },
+    },
+
+    orderBy,
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+
+  const total = await prisma.test.count({
+    where,
+  });
+
+  return {
+    tests,
+
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+};
+
+export const getMyTests = async (userId, page = 1, limit = 20) => {
+  const myTests = await prisma.test.findMany({
+    where: {
+      author_id: userId,
+    },
+    include: {
+      category: true,
+      university: true,
+      _count: {
+        select: {
+          questions: true,
+        },
+      },
+    },
+    skip: (page - 1) * limit,
+    take: limit,
+  });
+
+  const total = await prisma.test.count({
+    where: {
+      author_id: userId
+    }
+  })
+
+  return {
+    myTests,
+
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    }
+  }
+};
