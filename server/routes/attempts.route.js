@@ -3,12 +3,14 @@ import { authMiddleware } from "../middlewares/auth.middleware.js";
 import {
   answerAttemptController,
   finishAttemptController,
+  getHistoryAttemptsController,
   getResultsAttemptController,
   startAttemptController,
 } from "../controller/attempts.controller.js";
 
 const router = new Router();
 
+router.get("/", authMiddleware, getHistoryAttemptsController);
 router.post("/:testId/start", authMiddleware, startAttemptController); // почати спробу
 router.post("/:attemptId/answer", authMiddleware, answerAttemptController); // відповісти на питання
 router.post("/:attemptId/finish", authMiddleware, finishAttemptController); // закінчити спробу

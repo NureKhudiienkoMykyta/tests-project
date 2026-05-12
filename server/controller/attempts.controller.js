@@ -1,4 +1,4 @@
-import { startAttempt, recordAnswer, finishAttempt } from "../service/attempt.service.js";
+import { startAttempt, recordAnswer, finishAttempt, getResultTest, getHistoryAttempts } from "../service/attempt.service.js";
 import { ApiError } from "../utils/ApiError.js";
 
 export const startAttemptController = async (req, res, next) => {
@@ -67,7 +67,47 @@ export const finishAttemptController = async (req, res, next) => {
 
 export const getResultsAttemptController = async (req, res, next) => {
   try {
-    // TODO: Реалізувати логіку отримання результатів спроби
+    const attemptId = Number(req.params.attemptId);
+
+    if (!Number.isInteger(attemptId) || attemptId <= 0) {
+      return next(
+        ApiError.badRequest("Неправильний формат ідентифікатора спроби"),
+      );
+    }
+
+    const userId = req.user.id;
+
+    const testResult = await getResultTest(attemptId, userId);
+
+    return res.status(200).json({ data: testResult });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getHistoryAttemptsController = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    let { page = 1, limit = 20 } = req.query;
+
+    page = Number(page);
+    limit = Number(limit);
+
+    if (!Number.isInteger(page) || page <= 0) {
+      return next(
+        ApiError.badRequest("Page повинен бути цілим числом більше 0"),
+      );
+    }
+
+    if (!Number.isInteger(limit) || limit <= 0 || limit > 50) {
+      return next(
+        ApiError.badRequest("Limit повинен бути цілим числом від 1 до 50"),
+      );
+    }
+
+    const tests = await getHistoryAttempts(userId, limit, page);
+
+    return res.status(200).json({ data: tests });
   } catch (error) {
     next(error);
   }
