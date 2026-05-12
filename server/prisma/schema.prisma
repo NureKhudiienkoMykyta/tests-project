@@ -35,6 +35,7 @@ model User {
 
   refreshTokens RefreshToken[]
   created_tests Test[]
+  test_attempts TestAttempt[]
 }
 
 model RefreshToken {
@@ -66,6 +67,7 @@ model Test {
   questions            Question[]
   allowed_test_domains AllowedTestDomain[]
   allowed_test_emails  AllowedTestEmail[]
+  test_attempts        TestAttempt[]
 }
 
 model Category {
@@ -88,7 +90,8 @@ model Question {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  answers Answer[]
+  answers         Answer[]
+  attempt_answers AttemptAnswer[]
 }
 
 model Answer {
@@ -111,6 +114,35 @@ model AllowedTestEmail {
   test_id Int
   test    Test   @relation(fields: [test_id], references: [id], onDelete: Cascade)
   email   String
+}
+
+model TestAttempt {
+  id          Int           @id @default(autoincrement())
+  test_id     Int
+  test        Test          @relation(fields: [test_id], references: [id])
+  user_id     Int
+  user        User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  status      AttemptStatus @default(IN_PROGRESS)
+  score       Int           @default(0)
+  max_score   Int
+  started_at  DateTime      @default(now())
+  finished_at DateTime?
+  expired_at  DateTime? // started_at + time_limit_seconds
+
+  attempt_answers AttemptAnswer[]
+}
+
+model AttemptAnswer {
+  id                Int         @id @default(autoincrement())
+  attempt_id        Int
+  attempt           TestAttempt @relation(fields: [attempt_id], references: [id], onDelete: Cascade)
+  question_id       Int?
+  question          Question?   @relation(fields: [question_id], references: [id], onDelete: SetNull)
+  question_snapshot String
+  answer_snapshot   String
+  is_correct        Boolean     @default(false)
+  was_cancelled     Boolean     @default(false)
+  answered_at       DateTime    @default(now())
 }
 
 enum Role {
@@ -136,4 +168,10 @@ enum QuestionType {
   SHORT_TEXT
   LONG_TEXT
   NUMBER
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  COMPLETED
+  EXPIRED
 }
