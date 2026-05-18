@@ -57,24 +57,32 @@ export const startAttempt = async (testId, userId) => {
   }
 
   // Перевірка ліміту
-  // TODO: ДОДАТИ ПЕРЕВІРКУ НАЯВНОСТІ ПІДПИСКИ КОРИСТУВАЧА if (subscr) else
-  // НАРАЗІ ПРОСТО ПЕРЕВІРКА ДЕННОГО ЛІМІТУ
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-
-  const attemptsToday = await prisma.testAttempt.count({
+  // TODO: ДОДАТИ ПЕРЕВІРКУ НАЯВНОСТІ ПІДПИСКИ КОРИСТУВАЧА if (subscr) els
+  const activeSubscription = await prisma.subscription.findFirst({
     where: {
       user_id: userId,
-      started_at: { gte: today, lt: tomorrow },
+      status: { in: ["ACTIVE"] },
     },
   });
 
-  if (attemptsToday >= 15) {
-    throw ApiError.forbidden(
-      "Денний ліміт на проходження тестів закінчився. Придбайте підписку або повторіть спробу завтра.",
-    );
+  if (!activeSubscription) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const attemptsToday = await prisma.testAttempt.count({
+      where: {
+        user_id: userId,
+        started_at: { gte: today, lt: tomorrow },
+      },
+    });
+
+    if (attemptsToday >= 15) {
+      throw ApiError.forbidden(
+        "Денний ліміт на проходження тестів (15 спроб) закінчився. Придбайте підписку або повторіть спробу завтра.",
+      );
+    }
   }
 
   // Перевірити чи немає вже IN_PROGRESS спроби цього тесту
