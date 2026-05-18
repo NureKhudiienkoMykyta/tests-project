@@ -32,10 +32,12 @@ model User {
   updated_at         DateTime    @updatedAt
   university_id      Int?
   university         University? @relation(fields: [university_id], references: [id], onDelete: SetNull)
+  stripeCustomerId   String?     @unique
 
   refreshTokens RefreshToken[]
   created_tests Test[]
   test_attempts TestAttempt[]
+  subscriptions Subscription[]
 }
 
 model RefreshToken {
@@ -145,6 +147,45 @@ model AttemptAnswer {
   answered_at       DateTime    @default(now())
 }
 
+model Subscription {
+  id      String @id @default(cuid())
+  user_id Int
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  stripe_subscription_id String?   @unique
+  current_period_end     DateTime? // Дата наступного списання / закінчення ліміту
+
+  stripe_price_id      String // Це ID зі STRIPE
+  price                Price              @relation(fields: [stripe_price_id], references: [stripe_price_id])
+  status               StatusSubscription
+  cancel_at_period_end Boolean            @default(false) // Чи натиснув юзер "скасувати" (до кінця місяця преміум працює)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id                Int     @id @default(autoincrement())
+  stripe_product_id String  @unique // prod_xxx з Stripe Dashboard
+  name              String
+  description       String?
+  active            Boolean @default(true)
+  prices            Price[]
+}
+
+model Price {
+  id              Int     @id @default(autoincrement())
+  stripe_price_id String  @unique // price_xxx з Stripe Dashboard
+  productId       Int
+  product         Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  amount          Int // Ціна в копійках (наприклад, 15000 для 150.00 UAH)
+  currency        String  @default("uah") // 'uah', 'usd'
+  interval        String // 'month' або 'year'
+  active          Boolean @default(true)
+
+  subscriptions Subscription[]
+}
+
 enum Role {
   admin
   common_user
@@ -174,4 +215,12 @@ enum AttemptStatus {
   IN_PROGRESS
   COMPLETED
   EXPIRED
+}
+
+enum StatusSubscription {
+  ACTIVE
+  UNPAID
+  CANCELED
+  PAST_DUE
+  INCOMPLETE
 }
