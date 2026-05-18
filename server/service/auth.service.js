@@ -107,6 +107,27 @@ export const loginAccount = async (email, password) => {
   // ТУТ ДОДАТИ ОТРИМАННЯ ПІДПИСКИ КОРИСТУВАЧА, ЯКЩО ВОНА Є ТО ДОДАЙЄМО ДО USERDATA,
   // ЯКЩО НЕМАЄ ТО FALSE - ЦЕ ДЛЯ ТОГО ЩОБ НА КЛІЄНТІ ВІДОБРАЗИТИ ЗНАЧОК ТЕ ЩО ПІДПИСКА Є.
 
+  const activeSubscription = await prisma.subscription.findFirst({
+    where: {
+      user_id: existedUser.id,
+      status: {
+        in: ["ACTIVE"],
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const subscriptionData = activeSubscription
+    ? {
+        id: activeSubscription.id,
+        status: activeSubscription.status,
+        currentPeriodEnd: activeSubscription.current_period_end,
+        cancelAtPeriodEnd: activeSubscription.cancel_at_period_end,
+      }
+    : false;
+
   const accessToken = generateAccessToken({
     id: existedUser.id,
     role: existedUser.role,
@@ -129,6 +150,7 @@ export const loginAccount = async (email, password) => {
       role: existedUser.role,
       email: existedUser.email,
       university: existedUser.university,
+      subscription: subscriptionData,
     },
   };
 };
@@ -160,6 +182,27 @@ export const refreshTokenAccount = async (refreshToken) => {
   // ТУТ ДОДАТИ ОТРИМАННЯ ПІДПИСКИ КОРИСТУВАЧА, ЯКЩО ВОНА Є ТО ДОДАЙЄМО ДО USERDATA,
   // ЯКЩО НЕМАЄ ТО FALSE - ЦЕ ДЛЯ ТОГО ЩОБ НА КЛІЄНТІ ВІДОБРАЗИТИ ЗНАЧОК ТЕ ЩО ПІДПИСКА Є.
 
+  const activeSubscription = await prisma.subscription.findFirst({
+    where: {
+      user_id: user.id,
+      status: {
+        in: ["ACTIVE"],
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const subscriptionData = activeSubscription
+    ? {
+        id: activeSubscription.id,
+        status: activeSubscription.status,
+        currentPeriodEnd: activeSubscription.current_period_end,
+        cancelAtPeriodEnd: activeSubscription.cancel_at_period_end,
+      }
+    : false;
+
   const accessToken = generateAccessToken({
     id: user.id,
     role: user.role,
@@ -182,6 +225,7 @@ export const refreshTokenAccount = async (refreshToken) => {
       role: user.role,
       email: user.email,
       university: user.university,
+      subscription: subscriptionData,
     },
   };
 };
