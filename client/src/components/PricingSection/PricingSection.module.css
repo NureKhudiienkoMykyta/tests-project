@@ -1,0 +1,204 @@
+.pricingSection {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.dashboardSpacing {
+  margin-top: 16px;
+  border-top: 1px solid #e4e4e7;
+  padding-top: 40px;
+}
+
+.sectionHeader {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #e0e7ff;
+  color: #4f46e5;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sectionHeader h2 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Сітка для карток планів */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+  align-items: stretch; /* Картки будуть однакової висоти незалежно від довжини опису */
+}
+
+.planCard {
+  background-color: #ffffff;
+  border: 1px solid #e4e4e7;
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Рівняє кнопку до нижнього краю */
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.planCard:hover {
+  transform: translateY(-4px);
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.08);
+}
+
+/* Акцентна картка для річного тарифу */
+.popularCard {
+  border: 2px solid #4f46e5;
+  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.08);
+}
+
+.popularCard:hover {
+  border-color: #4338ca;
+  box-shadow: 0 16px 32px -10px rgba(79, 70, 229, 0.15);
+}
+
+.popularBadge {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+  white-space: nowrap;
+}
+
+.cardHeader {
+  margin-bottom: 20px;
+}
+
+.planName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+}
+
+.planDescription {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Блок ціни */
+.priceBlock {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.currency {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-right: 2px;
+}
+
+.price {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -1px;
+}
+
+.period {
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+/* Кнопки підписки */
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #f1f5f9;
+  color: #334155;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+  width: 100%;
+  margin-top: auto; /* Штовхає кнопку вниз, якщо контенту зверху мало */
+}
+
+.actionBtn:hover:not(:disabled) {
+  background-color: #e2e8f0;
+}
+
+.actionBtn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Стиль кнопки для річного плану */
+.premiumBtn {
+  background-color: #4f46e5;
+  color: #ffffff;
+}
+
+.premiumBtn:hover:not(:disabled) {
+  background-color: #4338ca;
+}
+
+.actionBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Анімація обертання іконки лоадера */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

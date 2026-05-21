@@ -1,0 +1,64 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 60px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-family: var(--font-logo, 'Plus Jakarta Sans', sans-serif);
+  font-size: 54px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #111827;
+  margin-bottom: 20px;
+}
+
+.heroTitle mark {
+  background: none;
+  color: #f97316;
+}
+
+.heroDescription {
+  font-size: 18px;
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: 36px;
+}
+
+.ctaGroup {
+  display: flex;
+  gap: 16px;
+}
+
+.primaryBtn {
+  text-decoration: none;
+  background-color: #f97316;
+  color: #ffffff;
+  padding: 14px 32px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.primaryBtn:hover {
+  background-color: #ea580c;
+  transform: translateY(-2px);
+}
+
+.secondaryBtn {
+  text-decoration: none;
+  background-color: #f3f4f6;
+  color: #374151;
+  padding: 14px 32px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: background-color 0.2s;
+}
+
+.secondaryBtn:hover {
+  background-color: #e5e7eb;
+}

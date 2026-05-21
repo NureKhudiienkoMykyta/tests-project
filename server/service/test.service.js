@@ -387,6 +387,22 @@ export const getTestInformationById = async (testId) => {
   };
 };
 
+const formatTestResponse = (test) => {
+  return {
+    id: test.id,
+    title: test.title,
+    description: test.description,
+    timeLimitSeconds: test.time_limit_seccond,
+    accessMode: test.access_mode,
+    createdAt: test.created_at,
+    category: test.category?.name || test.category || null,
+    university: test.university?.name || null,
+    author: test.author,
+    questionsCount: test._count?.questions || 0,
+    completedAttemptsCount: test._count?.test_attempts || 0,
+  };
+};
+
 export const getTests = async (
   page = 1,
   limit = 20,
@@ -458,8 +474,7 @@ export const getTests = async (
   });
 
   return {
-    tests,
-
+    tests: tests.map(formatTestResponse),
     pagination: {
       page,
       limit,
@@ -477,10 +492,14 @@ export const getMyTests = async (userId, page = 1, limit = 20) => {
     include: {
       category: true,
       university: true,
-      _count: {
+      author: {
         select: {
-          questions: true,
+          first_name: true,
+          last_name: true,
         },
+      },
+      _count: {
+        select: { questions: true },
       },
     },
     skip: (page - 1) * limit,
@@ -494,7 +513,7 @@ export const getMyTests = async (userId, page = 1, limit = 20) => {
   });
 
   return {
-    myTests,
+    tests: myTests.map(formatTestResponse),
 
     pagination: {
       page,
@@ -503,6 +522,70 @@ export const getMyTests = async (userId, page = 1, limit = 20) => {
       totalPages: Math.ceil(total / limit),
     },
   };
+};
+
+export const getContinueTests = async (userId) => {
+  const attempts = await prisma.testAttempt.findMany({
+    where: {
+      user_id: userId,
+      status: "IN_PROGRESS",
+    },
+    include: {
+      test: {
+        select: {
+          title: true,
+          _count: {
+            select: {
+              questions: true,
+            },
+          },
+        },
+      },
+      _count: {
+        select: {
+          attempt_answers: true,
+        },
+      },
+    },
+  });
+
+  return attempts.map((attempt) => ({
+    attemptId: attempt.id,
+    testId: attempt.test_id,
+    title: attempt.test?.title || null,
+    totalQuestions: attempt.test?._count.questions || 0,
+    answeredQuestions: attempt._count.attempt_answers || 0,
+  }));
+};
+
+export const getPopularTests = async (limit = 20) => {
+  const tests = await prisma.test.findMany({
+    where: { is_published: true },
+    include: {
+      category: true,
+      university: true,
+      author: {
+        select: {
+          first_name: true,
+          last_name: true,
+        },
+      },
+      _count: {
+        select: {
+          questions: true,
+          test_attempts: {
+            where: { status: { in: ["COMPLETED", "EXPIRED"] } },
+          },
+        },
+      },
+    },
+    orderBy: {
+      test_attempts: { _count: "desc" },
+    },
+    take: limit,
+  });
+
+  return tests.map(formatTestResponse);
 };
 
 export const getTestForEdit = async (userId, testId) => {

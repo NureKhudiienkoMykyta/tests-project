@@ -1,0 +1,32 @@
+.statsRow {
+  display: flex;
+  justify-content: space-around;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  border-radius: 24px;
+  padding: 48px 24px;
+  text-align: center;
+  gap: 24px;
+}
+
+@media (max-width: 600px) {
+  .statsRow { flex-direction: column; }
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statNumber {
+  font-family: var(--font-logo, 'Plus Jakarta Sans', sans-serif);
+  font-size: 42px;
+  font-weight: 800;
+  color: #ea580c;
+}
+
+.statLabel {
+  font-size: 16px;
+  font-weight: 500;
+  color: #7c2d12;
+}

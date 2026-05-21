@@ -1,0 +1,15 @@
+.landingWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  width: 100%;
+}
+
+.faqSectionTitle {
+  font-family: var(--font-logo, 'Plus Jakarta Sans', sans-serif);
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  color: #111827;
+  margin-bottom: 48px;
+}

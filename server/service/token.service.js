@@ -53,9 +53,10 @@ export const removeRefreshToken = async (refreshToken) => {
   return token;
 };
 
-export const findRefreshToken = async (refreshToken) => {
+export const findRefreshToken = async (userId, refreshToken) => {
   const token = await prisma.refreshToken.findFirst({
     where: {
+      user_id: userId,
       refresh_token: refreshToken,
     },
   });

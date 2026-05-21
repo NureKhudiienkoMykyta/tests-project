@@ -3,7 +3,9 @@ import { authMiddleware } from "../middlewares/auth.middleware.js";
 import {
   createTestController,
   deleteTestController,
+  getContinueTestsController,
   getMyTestsControoler,
+  getPopularTestsController,
   getTestForEditController,
   getTestInformationByIdController,
   getTestsController,
@@ -14,6 +16,8 @@ const router = new Router();
 
 router.get("/", getTestsController); // ОТРИМАННЯ ВСІХ ТЕСТІВ З ПОШУКОМ ТА ФІЛЬТРАЦІЄЮ ЗА КАТЕГОРІЄЮ ТА ЗВО
 router.get("/my", authMiddleware, getMyTestsControoler); // ОТРИМАННЯ МОЇХ ТЕСТІВ, ЯКІ Я СТВОРИВ
+router.get("/popular", getPopularTestsController); // СПИСОК НАЙПОПУЛЯРНІШИХ ТЕСТІВ
+router.get("/continue", authMiddleware, getContinueTestsController); // СПИСОК НЕЗАВЕРШЕНИХ СПРОБ
 router.post("/", authMiddleware, createTestController); // СТВОРЕННЯ ТЕСТУ З ПИТАННЯМИ ТА ВАРІАНТАМИ ВІДПОВІДІ ТА ТИПОМ ДОСТУПУ(ПУБЛІЧНИЙ, ЗА ДОМЕНОМ, ЗА ПОШТАМИ)
 router.get("/:id", getTestInformationByIdController); // ОТРИМАННЯ ДЕТАЛЬНОЇ ІНФОРМАЦІЇ ПРО ТЕСТ
 router.get("/:id/edit", authMiddleware, getTestForEditController); // ОТРИМАННЯ ДЕТАЛЬНОЇ ІНФОРМАЦІЇ ПРО ТЕСТ ДЛЯ РЕДАГУВАННЯ

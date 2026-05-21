@@ -1,0 +1,76 @@
+.footer {
+  background-color: #111827; 
+  color: #9ca3af; 
+  padding: 60px 40px 24px 40px;
+  border-top: 1px solid #1f2937;
+  font-family: var(--font-main, 'Inter', sans-serif);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+/* Колонки футера */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 180px;
+}
+
+.columnTitle {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.link {
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #f97316; 
+}
+
+.text {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.bottom {
+  max-width: 1200px;
+  margin: 40px auto 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid #1f2937;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 14px;
+}
+
+.copyright {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

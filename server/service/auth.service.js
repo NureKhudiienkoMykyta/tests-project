@@ -77,6 +77,40 @@ export const activateAccount = async (activateToken) => {
   });
 };
 
+export const resendActivationMail = async (email) => {
+  if (!email) {
+    throw ApiError.badRequest("Email є обов'язковим полем");
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    throw ApiError.notFound("Користувача з таким email не знайдено");
+  }
+
+  if (user.is_activated) {
+    throw ApiError.badRequest(
+      "Цей аккаунт вже успішно активовано. Спробуйте увійти.",
+    );
+  }
+
+  const newVerifyToken = uuidv4();
+
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { email_verify_token: newVerifyToken },
+  });
+
+  await sendActivationMail(user.email, newVerifyToken);
+
+  return {
+    email: user.email,
+    status: "ACTIVATION_LETTER_RESENT",
+  };
+};
+
 export const loginAccount = async (email, password) => {
   const existedUser = await prisma.user.findUnique({
     where: {
@@ -151,6 +185,7 @@ export const loginAccount = async (email, password) => {
       email: existedUser.email,
       university: existedUser.university,
       subscription: subscriptionData,
+      is_activated: existedUser.is_activated,
     },
   };
 };
@@ -165,9 +200,17 @@ export const refreshTokenAccount = async (refreshToken) => {
     throw ApiError.unauthorized();
   }
 
-  const userData = validateRefreshToken(refreshToken);
+  console.log(refreshToken);
 
-  const tokenFromDb = await findRefreshToken(refreshToken);
+  const userData = validateRefreshToken(refreshToken);
+  if (!userData) {
+    throw ApiError.unauthorized();
+  }
+
+  const tokenFromDb = await findRefreshToken(userData.id, refreshToken);
+
+  console.log(userData);
+  console.log(tokenFromDb);
 
   if (!userData || !tokenFromDb) {
     throw ApiError.unauthorized();
@@ -226,6 +269,7 @@ export const refreshTokenAccount = async (refreshToken) => {
       email: user.email,
       university: user.university,
       subscription: subscriptionData,
+      is_activated: user.is_activated,
     },
   };
 };

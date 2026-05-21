@@ -1,0 +1,23 @@
+.logoLink {
+  text-decoration: none;
+  font-family: var(--font-logo, 'Plus Jakarta Sans', sans-serif);
+  font-weight: 800;
+  font-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  letter-spacing: -0.5px;
+  user-select: none;
+}
+
+.quiz {
+  color: #374151; 
+}
+
+.bee {
+  color: #f97316;
+}
+
+.dot {
+  color: #1f2937;
+  margin-left: 1px;
+}

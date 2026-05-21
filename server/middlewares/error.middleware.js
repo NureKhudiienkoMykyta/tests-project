@@ -1,6 +1,6 @@
 import { ApiError } from "../utils/ApiError.js";
 
-export const errorMiddleware = (err, res, req, next) => {
+export const errorMiddleware = (err, req, res, next) => {
   console.error(err);
 
   if (err instanceof ApiError) {

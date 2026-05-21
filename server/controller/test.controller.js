@@ -2,7 +2,9 @@ import { ApiError } from "../utils/ApiError.js";
 import {
   createTest,
   deleteTest,
+  getContinueTests,
   getMyTests,
+  getPopularTests,
   getTestForEdit,
   getTestInformationById,
   getTests,
@@ -149,6 +151,35 @@ export const getMyTestsControoler = async (req, res, next) => {
     const tests = await getMyTests(userId, page, limit);
 
     return res.status(200).json({ data: tests });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getContinueTestsController = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const attempts = await getContinueTests(userId);
+    return res.status(200).json({ data: attempts });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getPopularTestsController = async (req, res, next) => {
+  try {
+    let { limit = 20 } = req.query;
+
+    limit = Number(limit);
+
+    if (!Number.isInteger(limit) || limit <= 0 || limit > 30) {
+      return next(
+        ApiError.badRequest("Limit повинен бути цілим числом від 1 до 30"),
+      );
+    }
+
+    const popularTests = await getPopularTests(limit);
+    return res.status(200).json({ data: popularTests });
   } catch (error) {
     next(error);
   }

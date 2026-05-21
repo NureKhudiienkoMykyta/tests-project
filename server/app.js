@@ -8,7 +8,12 @@ import { errorMiddleware } from "./middlewares/error.middleware.js";
 const app = express();
 
 // MIDDLEWARES
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  }),
+);
 app.use(cookieParser());
 app.use(
   express.json({
@@ -20,9 +25,10 @@ app.use(
   }),
 );
 app.use(helmet());
-app.use(errorMiddleware);
 
 // ROUTES
 app.use("/api", router);
+
+app.use(errorMiddleware);
 
 export default app;

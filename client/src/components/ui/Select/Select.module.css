@@ -1,0 +1,101 @@
+.selectWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.combobox {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0 14px;
+  transition: border-color 0.2s;
+}
+
+.combobox:focus-within {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
+}
+
+.combobox.hasError {
+  border-color: #ef4444;
+}
+
+.input {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 44px;
+  font-size: 15px;
+  color: #111827;
+  background: transparent;
+}
+
+.input::placeholder {
+  color: #111827;
+}
+
+.arrow {
+  color: #9ca3af;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.arrowOpen {
+  transform: rotate(180deg);
+  color: #f97316;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  padding: 4px;
+  margin: 0;
+  list-style: none;
+}
+
+.option {
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #374151;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.option:hover {
+  background-color: #fff7ed;
+  color: #f97316;
+}
+
+.noOptions {
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.errorText {
+  font-size: 12px;
+  color: #ef4444;
+  font-weight: 500;
+}

@@ -4,6 +4,7 @@ import {
   logoutAccount,
   refreshTokenAccount,
   registration,
+  resendActivationMail,
 } from "../service/auth.service.js";
 import { ApiError } from "../utils/ApiError.js";
 import {
@@ -78,11 +79,17 @@ export const login = async (req, res, next) => {
 
     const userData = await loginAccount(email, password);
 
-    res.cookie("refreshToken", userData.refreshToken, {
+    const isProduction = process.env.NODE_ENV === "production";
+
+    const cookieOptions = {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-    });
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      path: "/",
+    };
+
+    res.cookie("refreshToken", userData.refreshToken, cookieOptions);
 
     return res.status(200).json({
       accessToken: userData.accessToken,
@@ -98,11 +105,17 @@ export const refresh = async (req, res, next) => {
     const { refreshToken } = req.cookies;
     const userData = await refreshTokenAccount(refreshToken);
 
-    res.cookie("refreshToken", userData.refreshToken, {
+    const isProduction = process.env.NODE_ENV === "production";
+
+    const cookieOptions = {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-    });
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      path: "/",
+    };
+
+    res.cookie("refreshToken", userData.refreshToken, cookieOptions);
 
     return res.status(200).json({
       accessToken: userData.accessToken,
@@ -121,6 +134,31 @@ export const verify = async (req, res, next) => {
 
     return res.redirect(`${process.env.CLIENT_URL}/login?activated=true`);
   } catch (error) {
+    console.error("Помилка активації пошти:", error.message);
+    return res.redirect(
+      `${process.env.CLIENT_URL}/login?activated=false&reason=invalid_token`,
+    );
+  }
+};
+
+export const resendVerify = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email || !validateEmail(email)) {
+      return next(
+        ApiError.unprocessableEntity("Невірний формат пошти або поле пусте"),
+      );
+    }
+
+    const result = await resendActivationMail(email);
+
+    return res.status(200).json({
+      success: true,
+      message: "Нове посилання для активації надіслано на вашу пошту.",
+      data: result,
+    });
+  } catch (error) {
     next(error);
   }
 };
@@ -133,9 +171,13 @@ export const logout = async (req, res, next) => {
       await logoutAccount(refreshToken);
     }
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      path: "/",
     });
 
     return res.status(200).json({ message: "Вихід виконано успішно" });

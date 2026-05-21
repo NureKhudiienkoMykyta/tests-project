@@ -15,5 +15,6 @@ router.post("/:testId/start", authMiddleware, startAttemptController); // поч
 router.post("/:attemptId/answer", authMiddleware, answerAttemptController); // відповісти на питання
 router.post("/:attemptId/finish", authMiddleware, finishAttemptController); // закінчити спробу
 router.get("/:attemptId/result", authMiddleware, getResultsAttemptController); // отримати результати тесту якщо full  то з питаннями якщо ONLY_SCORE то тільки кількість питань
+// router.delete() // Видалення спроби користувача
 
 export default router;

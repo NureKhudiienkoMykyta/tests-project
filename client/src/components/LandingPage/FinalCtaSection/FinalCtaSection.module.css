@@ -1,0 +1,40 @@
+.finalCta {
+  background-color: #111827;
+  border-radius: 24px;
+  padding: 60px 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.finalCta h3 {
+  font-family: var(--font-logo, 'Plus Jakarta Sans', sans-serif);
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.finalCta p {
+  color: #9ca3af;
+  font-size: 16px;
+  max-width: 500px;
+  margin: 0;
+}
+
+.primaryBtn {
+  text-decoration: none;
+  background-color: #f97316;
+  color: #ffffff;
+  padding: 16px 40px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: background-color 0.2s;
+}
+
+.primaryBtn:hover {
+  background-color: #ea580c;
+}
