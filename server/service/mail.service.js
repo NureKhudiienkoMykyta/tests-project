@@ -11,18 +11,31 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendActivationMail = async (email, verifyToken) => {
-  const link = `${process.env.API_URL}/api/auth/verify/${verifyToken}`;
-
-  await transporter.sendMail({
-    from: process.env.SMTP_USER,
-    to: email,
-    subject: `Активація акаунта на ${process.env.CLIENT_URL}`,
-    text: "",
-    html: `
-      <div>
-        <h1>Для активації перейдіть за посиланням</h1>
-        <a href="${link}">${link}</a>
-      </div>
-    `,
+  transporter.verify((error, success) => {
+    if (error) {
+      console.log("SMTP ERROR:", error);
+    } else {
+      console.log("SMTP READY");
+    }
   });
+
+  try {
+    const link = `${process.env.API_URL}/api/auth/verify/${verifyToken}`;
+
+    const info = await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: email,
+      subject: `Активація акаунта на ${process.env.CLIENT_URL}`,
+      html: `
+        <div>
+          <h1>Для активації перейдіть за посиланням</h1>
+          <a href="${link}">${link}</a>
+        </div>
+      `,
+    });
+
+    console.log("Mail sent:", info.response);
+  } catch (error) {
+    console.error("MAIL ERROR:", error);
+  }
 };
