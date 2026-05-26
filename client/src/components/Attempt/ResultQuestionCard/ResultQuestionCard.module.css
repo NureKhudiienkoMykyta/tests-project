@@ -1,0 +1,77 @@
+.questionRow {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  border-left: 5px solid #cbd5e1;
+}
+
+.qCorrect   { border-left-color: #10b981; }
+.qIncorrect { border-left-color: #ef4444; }
+.qCancelled { border-left-color: #f59e0b; background-color: #fffbeb; }
+
+.qHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.qIndex {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.statusIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.qCorrect .statusIndicator   { color: #10b981; }
+.qIncorrect .statusIndicator { color: #ef4444; }
+.qCancelled .statusIndicator { color: #d97706; }
+
+.questionText {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  line-height: 1.4;
+  color: #0f172a;
+}
+
+.answerBox {
+  background-color: #f8fafc;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #f1f5f9;
+}
+
+.qCancelled .answerBox {
+  background-color: #fef3c7;
+  border-color: #fde68a;
+}
+
+.answerLabel {
+  display: block;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.answerValue {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.qCancelled .answerValue {
+  color: #b45309;
+  font-style: italic;
+}

@@ -1,0 +1,99 @@
+.pageContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.pageHeader h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.35rem 0;
+}
+
+.pageHeader p {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.saveBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #2563eb;
+  color: #ffffff;
+  border: 1px solid #2563eb;
+  padding: 0.65rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.saveBtn:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.saveBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.errorBanner {
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.sectionsLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.bottomActions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.addQuestionOuterBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  width: 100%;
+  justify-content: center;
+}
+
+
+.addQuestionOuterBtn:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+}

@@ -50,7 +50,7 @@ export const createSession = async (userId, stripePriceId) => {
     customer: stripeCustomerId,
     payment_method_types: ["card"],
     mode: "subscription",
-    locale: "auto",
+    locale: "en",
     line_items: [
       {
         price: price.stripe_price_id,
@@ -73,23 +73,36 @@ export const cancelSubscription = async (userId, subscriptionId) => {
     where: {
       id: subscriptionId,
       user_id: userId,
-      status: { in: ["ACTIVE"] },
+      status: { in: ["ACTIVE", "PAST_DUE"] },
     },
-    orderBy: { createdAt: "desc" },
   });
 
   if (!activeSub || !activeSub.stripe_subscription_id) {
     throw ApiError.badRequest("У вас немає активної підписки для скасування.");
   }
 
-  await stripe.subscriptions.update(activeSub.stripe_subscription_id, {
-    cancel_at_period_end: true,
-  });
+  let updatedSub;
 
-  const updatedSub = await prisma.subscription.update({
-    where: { id: activeSub.id },
-    data: { cancel_at_period_end: true },
-  });
+  if (activeSub.status === "PAST_DUE") {
+    await stripe.subscriptions.cancel(activeSub.stripe_subscription_id);
+
+    updatedSub = await prisma.subscription.update({
+      where: { id: activeSub.id },
+      data: {
+        status: "CANCELED",
+        cancel_at_period_end: false,
+      },
+    });
+  } else {
+    await stripe.subscriptions.update(activeSub.stripe_subscription_id, {
+      cancel_at_period_end: true,
+    });
+
+    updatedSub = await prisma.subscription.update({
+      where: { id: activeSub.id },
+      data: { cancel_at_period_end: true },
+    });
+  }
 
   return updatedSub;
 };
@@ -104,8 +117,8 @@ export const openCustomerPortal = async (userId) => {
 
   const session = await stripe.billingPortal.sessions.create({
     customer: user.stripeCustomerId,
-    locale: "auto",
-    return_url: `${process.env.CLIENT_URL}/profile`,
+    locale: "en",
+    return_url: `${process.env.CLIENT_URL}/subscription/my`,
   });
 
   return { url: session.url };
@@ -128,11 +141,18 @@ export const getPlans = async () => {
 };
 
 export const getMyActiveSubscription = async (userId) => {
-  const activeSub = await prisma.subscription.findFirst({
+  const activeSub = await prisma.subscription.findMany({
     where: {
       user_id: userId,
-      status: { in: ["ACTIVE"] },
-      current_period_end: { gte: new Date() },
+      OR: [
+        {
+          status: "ACTIVE",
+          current_period_end: { gte: new Date() },
+        },
+        {
+          status: "PAST_DUE",
+        },
+      ],
     },
     orderBy: { createdAt: "desc" },
     include: { price: { include: { product: true } } },
@@ -179,7 +199,7 @@ export const handleWebhook = async (rawBody, signature) => {
 
         const currPeriodEnd = stripeSub.items.data[0].current_period_end;
 
-        // Перевіряємо чи підписка вже існує (захист від дублів)
+        // Перевіряємо чи підписка вже існує
         const existingSub = await prisma.subscription.findUnique({
           where: { stripe_subscription_id: stripeSub.id },
         });
@@ -199,7 +219,7 @@ export const handleWebhook = async (rawBody, signature) => {
         break;
       }
 
-      // 2. Успішне зняття грошей (перше або щомісячне)
+      // 2. Успішне зняття грошей
       case "invoice.payment_succeeded": {
         const invoice = event.data.object;
         if (!invoice.subscription) break;
@@ -229,7 +249,7 @@ export const handleWebhook = async (rawBody, signature) => {
         break;
       }
 
-      // 3. Помилка оплати (немає коштів на картці)
+      // 3. Помилка оплати
       case "invoice.payment_failed": {
         const invoice = event.data.object;
         if (!invoice.subscription) break;
@@ -241,7 +261,7 @@ export const handleWebhook = async (rawBody, signature) => {
         break;
       }
 
-      // 4. Зміна параметрів підписки на стороні Stripe (наприклад, юзер змінив тариф у Customer Portal)
+      // 4. Зміна параметрів підписки на стороні Stripe
       case "customer.subscription.updated": {
         const stripeSub = event.data.object;
         console.log(stripeSub);

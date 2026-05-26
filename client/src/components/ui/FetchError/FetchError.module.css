@@ -1,0 +1,58 @@
+.errorContainer {
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.errorCard {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 1rem;
+  border: 1px solid #fee2e2;
+  text-align: center;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  max-width: 450px;
+  width: 100%;
+}
+
+.iconWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.errorIcon {
+  color: #ef4444;
+}
+
+.errorCard h2 {
+  color: #1e293b;
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.errorCard p {
+  color: #64748b;
+  margin: 0 0 2rem 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.backBtn {
+  background-color: #0f172a;
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.backBtn:hover {
+  background-color: #1e293b;
+}

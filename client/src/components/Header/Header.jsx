@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuthStore } from "../../stores/useAuthStore";
 import { Link, useNavigate } from "react-router";
-import { User, LogOut, Settings } from "lucide-react";
+import { User, LogOut, CreditCard, FileText, History } from "lucide-react";
 import styles from "./Header.module.css";
 import Logo from "../ui/Logo/Logo";
 function Header() {
@@ -33,7 +33,6 @@ function Header() {
     <header className={styles.header}>
       {/*ЛІВА ЧАСТИНА*/}
       <Logo />
-
       {/*ЦЕНТРАЛЬНА ЧАСТИНА*/}
       <nav className={styles.nav}>
         <Link to="/" className={styles.navLink}>
@@ -42,9 +41,13 @@ function Header() {
         <Link to="/library" className={styles.navLink}>
           Бібліотека тестів
         </Link>
+        {user && (
+          <Link to="/test/create" className={styles.navLink}>
+            Створити тест
+          </Link>
+        )}
       </nav>
-
-      {/*ПРАВА ЧАСТИНА*/}
+      {/*ПРАВА ЧАСТИНА*/}{" "}
       <div className={styles.rightSection}>
         {!user ? (
           /* КОРИСТУВАЧ — ГІСТЬ */
@@ -59,7 +62,6 @@ function Header() {
         ) : (
           /* КОРИСТУВАЧ АВТОРИЗОВАНИЙ */
           <>
-            {/* Статус підписки */}
             {isPremium ? (
               <span className={styles.premiumBadge}>Premium</span>
             ) : (
@@ -81,18 +83,44 @@ function Header() {
               {/* Дропдаун */}
               {isDropdownOpen && (
                 <div className={styles.dropdown}>
+                  <div className={styles.userEmailInfo}>
+                    <span>{user.email}</span>
+                  </div>
+
+                  <div className={styles.divider} />
+
                   <Link
-                    to="/profile"
+                    to="/test/my"
                     className={styles.dropdownItem}
                     onClick={() => setIsDropdownOpen(false)}
                   >
-                    <Settings size={16} />
-                    Профіль
+                    <FileText size={16} />
+                    Мої тести
                   </Link>
+
+                  <Link
+                    to="/attempt/history"
+                    className={styles.dropdownItem}
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    <History size={16} />
+                    Історія спроб
+                  </Link>
+
+                  <Link
+                    to="/subscription/my"
+                    className={styles.dropdownItem}
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    <CreditCard size={16} />
+                    Підписка
+                  </Link>
+
+                  <div className={styles.divider} />
 
                   <button
                     onClick={handleLogout}
-                    className={`${styles.dropdownItem} styles.logoutItem`}
+                    className={`${styles.dropdownItem} ${styles.logoutItem}`}
                   >
                     <LogOut size={16} />
                     Вийти

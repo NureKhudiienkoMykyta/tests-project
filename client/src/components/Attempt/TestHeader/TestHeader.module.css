@@ -1,0 +1,92 @@
+.header {
+  background-color: #ffffff;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-sizing: border-box;
+}
+
+.headerLeft {
+  flex: 1;
+  max-width: 500px;
+}
+
+.testTitle {
+  font-size: 0.875rem;
+  color: #78350f; 
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.progressText {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.75rem 0;
+}
+
+.muted {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.progressBarBg {
+  height: 6px;
+  background-color: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background-color: #f97316; 
+  border-radius: 9999px;
+}
+
+/* ВІДЖЕТ ТАЙМЕРА */
+.timerWidget {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: #fdf8e6; 
+  border: 1px solid #fef08a; 
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.75rem;
+}
+
+.timerIcon {
+  color: #b45309; 
+}
+
+.timerValue {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #78350f;
+  font-variant-numeric: tabular-nums;
+}
+
+.urgent {
+  background-color: #fef2f2;
+  border-color: #fee2e2;
+}
+
+.urgent .timerIcon {
+  color: #dc2626;
+}
+
+.urgent .timerValue {
+  color: #dc2626;
+  font-weight: 700;
+}
+

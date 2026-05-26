@@ -930,49 +930,56 @@ export const updateTest = async (userId, testId, payload) => {
           where: { id: questionId },
           data: updateData,
         });
+        if (!["SHORT_TEXT", "LONG_TEXT", "NUMBER"].includes(type)) {
+          // ОТРИМАННЯ ВІДПОВІДЕЙ ДЛЯ ПИТАНЬ
+          const existingAnswerIds = existingTest.questions
+            .find((q) => q.id === questionId)
+            .answers.map((a) => a.id);
+          const payloadAnswerIds = question.answers
+            .filter((a) => a.id !== null && a.id !== undefined)
+            .map((a) => Number(a.id));
 
-        // ОТРИМАННЯ ВІДПОВІДЕЙ ДЛЯ ПИТАНЬ
-        const existingAnswerIds = existingTest.questions
-          .find((q) => q.id === questionId)
-          .answers.map((a) => a.id);
-        const payloadAnswerIds = question.answers
-          .filter((a) => a.id !== null && a.id !== undefined)
-          .map((a) => Number(a.id));
-
-        // ВИДАЛЕННЯ ВІДПОВІДЕЙ, ЯКІ МИ НЕ ПЕРЕДАЛИ З КЛІЄНТУ
-        const answersToDelete = existingAnswerIds.filter(
-          (id) => !payloadAnswerIds.includes(id),
-        );
-        if (answersToDelete.length > 0) {
-          await tx.answer.deleteMany({
-            where: {
-              id: { in: answersToDelete },
-              question_id: questionId,
-            },
-          });
-        }
-
-        // ОНОВЛЕННЯ АБО СТВОРЕННЯ ВІДПОВІДІ
-        for (const answer of question.answers) {
-          const content = normalizeString(answer.content);
-          const isCorrect = answer.is_correct;
-
-          if (answer.id !== null && answer.id !== undefined) {
-            // ОНОВЛЕННЯ ВІДПОВІДІ
-            await tx.answer.update({
-              where: { id: Number(answer.id) },
-              data: { content, is_correct: isCorrect },
-            });
-          } else {
-            // СТВОРЕННЯ НОВОЇ ВІДПОВІДІ
-            await tx.answer.create({
-              data: {
-                content,
-                is_correct: isCorrect,
+          // ВИДАЛЕННЯ ВІДПОВІДЕЙ, ЯКІ МИ НЕ ПЕРЕДАЛИ З КЛІЄНТУ
+          const answersToDelete = existingAnswerIds.filter(
+            (id) => !payloadAnswerIds.includes(id),
+          );
+          if (answersToDelete.length > 0) {
+            await tx.answer.deleteMany({
+              where: {
+                id: { in: answersToDelete },
                 question_id: questionId,
               },
             });
           }
+
+          // ОНОВЛЕННЯ АБО СТВОРЕННЯ ВІДПОВІДІ
+          for (const answer of question.answers) {
+            const content = normalizeString(answer.content);
+            const isCorrect = answer.is_correct;
+
+            if (answer.id !== null && answer.id !== undefined) {
+              // ОНОВЛЕННЯ ВІДПОВІДІ
+              await tx.answer.update({
+                where: { id: Number(answer.id) },
+                data: { content, is_correct: isCorrect },
+              });
+            } else {
+              // СТВОРЕННЯ НОВОЇ ВІДПОВІДІ
+              await tx.answer.create({
+                data: {
+                  content,
+                  is_correct: isCorrect,
+                  question_id: questionId,
+                },
+              });
+            }
+          }
+        } else {
+          await tx.answer.deleteMany({
+            where: {
+              question_id: questionId,
+            },
+          });
         }
       } else {
         // СТВОРЕННЯ НОВОГО ПИТАННЯ

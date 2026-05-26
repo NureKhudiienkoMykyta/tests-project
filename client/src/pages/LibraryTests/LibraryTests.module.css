@@ -1,0 +1,236 @@
+.libraryContainer {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Заголовок */
+.libraryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 24px;
+}
+
+.titleBlock h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 6px 0;
+}
+
+.titleBlock p {
+  font-size: 1rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Панель фільтрів та пошуку (загальний контейнер) */
+.filterBar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: #ffffff;
+  padding: 4px 0;
+  width: 100%;
+}
+
+/* Рядок пошуку — строго на всю ширину */
+.searchRow {
+  width: 100%;
+}
+
+/* Глобальне розтягування твого компонента Input всередині searchRow */
+.searchRow :global(.inputWrapper),
+.searchRow :global(.inputContainer) {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Нижній рядок: Фільтри та Кнопка */
+.controlsRow {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .controlsRow {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+/* Групування твоїх оригінальних селектів */
+.selectsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+
+@media (min-width: 640px) {
+  .selectsGroup {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  /* Однаковий базовий розподіл ширини для кожного Select */
+  .selectsGroup > * {
+    flex: 1;
+    min-width: 220px;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .selectsGroup > * {
+    max-width: 280px; /* Захист від надмірного розтягування на моніторах */
+  }
+}
+
+/* Кнопка скидання фільтрів (завжди притиснута праворуч) */
+.clearFiltersBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  height: 42px; /* Фіксована висота в один рівень із селектами */
+  white-space: nowrap;
+  align-self: flex-end; /* На мобілках кнопка знизу праворуч */
+}
+
+@media (min-width: 768px) {
+  .clearFiltersBtn {
+    align-self: center;
+    margin-left: auto; /* Штовхає кнопку в самий край, якщо селекти не зайняли весь простір */
+  }
+}
+
+.clearFiltersBtn:hover {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+/* Сітка карток тестів */
+.testsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+}
+
+/* Зона лоадера */
+.loaderArea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+/* Стан порожньої сторінки */
+.emptyStateContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  color: #64748b;
+}
+
+.emptyIcon {
+  color: #94a3b8;
+  margin-bottom: 16px;
+}
+
+.emptyStateContainer h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+}
+
+.emptyStateContainer p {
+  font-size: 0.95rem;
+  max-width: 400px;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.resetSearchBtn {
+  background-color: #4f46e5;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.resetSearchBtn:hover {
+  background-color: #4338ca;
+}
+
+/* Пагінація */
+.paginationRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.pageBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #e4e4e7;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.pageBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.pageInfo strong {
+  color: #0f172a;
+}

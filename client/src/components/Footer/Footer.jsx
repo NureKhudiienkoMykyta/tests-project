@@ -1,8 +1,11 @@
 import { Link } from "react-router";
 import styles from "./Footer.module.css";
 import Logo from "../ui/Logo/Logo";
+import { useAuthStore } from "../../stores/useAuthStore";
 function Footer() {
   const currentYear = new Date().getFullYear();
+  const user = useAuthStore((state) => state.user);
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
@@ -29,6 +32,13 @@ function Footer() {
                 Бібліотека тестів
               </Link>
             </li>
+            {user && (
+              <li>
+                <Link to="/test/create" className={styles.link}>
+                  Створити тест
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
 
@@ -36,11 +46,6 @@ function Footer() {
         <div className={styles.column}>
           <h4 className={styles.columnTitle}>Про проект</h4>
           <ul className={styles.list}>
-            <li>
-              <Link to="/about" className={styles.link}>
-                Про нас
-              </Link>
-            </li>
             <li>
               <Link to="/faq" className={styles.link}>
                 Часті питання (FAQ)
@@ -53,7 +58,7 @@ function Footer() {
         <div className={styles.column}>
           <h4 className={styles.columnTitle}>Контакти та Підписка</h4>
           <ul className={styles.list}>
-            <li className={styles.text}>Email: support@quizbee.com</li>
+            <li className={styles.text}>Email: quizbeetest@gmail.com</li>
             <li>
               <Link
                 to="/subscription"

@@ -4,7 +4,7 @@ import styles from "./ContinueTestCard.module.css";
 
 function ContinueTestCard({ attempt }) {
   const navigate = useNavigate();
-  const { attemptId, title, totalQuestions, answeredQuestions } = attempt;
+  const { testId, title, totalQuestions, answeredQuestions } = attempt;
 
   const progressPercent =
     totalQuestions > 0
@@ -24,7 +24,7 @@ function ContinueTestCard({ attempt }) {
           </h4>
           <div className={styles.progressStatusBlock}>
             <p className={styles.progressText}>
-              Прогрес: <strong>{answeredQuestions}</strong> з
+              Прогрес: <strong>{answeredQuestions}</strong> з{" "}
               <strong>{totalQuestions}</strong> питань
             </p>
             <span className={styles.percentBadge}>{progressPercent}%</span>
@@ -41,7 +41,7 @@ function ContinueTestCard({ attempt }) {
 
       <button
         className={styles.continueBtn}
-        onClick={() => navigate(`/test/passing/${attemptId}`)}
+        onClick={() => navigate(`/test/passing/${testId}`)}
       >
         <Play size={16} fill="currentColor" />
         <span>Продовжити</span>

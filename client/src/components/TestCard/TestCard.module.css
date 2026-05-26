@@ -93,7 +93,7 @@
   align-items: center;
   gap: 8px;
   background-color: #f8fafc;
-  padding: 8px 12px;
+  padding: 8px 0px;
   border-radius: 8px;
   margin-bottom: 16px;
   border: 1px dashed #e2e8f0;
@@ -103,9 +103,6 @@
   font-size: 0.85rem;
   color: #475569;
   font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .metaGrid {
@@ -153,9 +150,6 @@
 .author {
   font-size: 0.85rem;
   color: #64748b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .author strong {

@@ -1,0 +1,149 @@
+.card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: box-shadow 0.2s;
+}
+
+@media (min-width: 640px) {
+  .card {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.mainInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background-color: #f1f5f9;
+  color: #475569;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid #e2e8f0;
+}
+
+/* СТАТУСИ */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.statusCompleted { background-color: #ecfdf5; color: #065f46; }
+.statusExpired { background-color: #fff7ed; color: #9a3412; }
+.statusDefault { background-color: #f8fafc; color: #64748b; }
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.metaRow {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* БЛОК ОЦІНКИ ТА КНОПКИ */
+.sideBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 1rem;
+}
+
+@media (min-width: 640px) {
+  .sideBlock {
+    border-top: none;
+    padding-top: 0;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+.scoreSection {
+  text-align: center;
+  min-width: 100px;
+}
+
+.percentage {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.rawPoints {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #64748b;
+  margin-top: 0.15rem;
+}
+
+/* Кольори для результату */
+.scoreSuccess .percentage { color: #10b981; }
+.scoreWarning .percentage { color: #f59e0b; }
+.scoreDanger .percentage  { color: #ef4444; }
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f8fafc;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.actionBtn:hover {
+  background-color: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}

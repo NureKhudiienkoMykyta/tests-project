@@ -2,13 +2,7 @@ import { useNavigate } from "react-router";
 import { CheckCircle2, XCircle, ArrowRight } from "lucide-react";
 import styles from "./PaymentStatus.module.css";
 
-function PaymentStatus({
-  isSuccess,
-  title,
-  message,
-  additionalMessage,
-  sessionId,
-}) {
+function PaymentStatus({ isSuccess, title, message, additionalMessage }) {
   const navigate = useNavigate();
 
   const handleBackToDashboard = () => {
@@ -38,14 +32,6 @@ function PaymentStatus({
         {/* Additional Message (if provided) */}
         {additionalMessage && (
           <p className={styles.additionalMessage}>{additionalMessage}</p>
-        )}
-
-        {/* Session ID (for success - optional) */}
-        {isSuccess && sessionId && (
-          <div className={styles.sessionInfo}>
-            <p className={styles.sessionLabel}>ID сесії:</p>
-            <p className={styles.sessionId}>{sessionId}</p>
-          </div>
         )}
 
         {/* Button */}

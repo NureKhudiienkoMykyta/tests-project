@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Loader } from "../ui/Loader/Loader";
 
-function PricingSection({ isDashboardView = false }) {
+function PricingSection({ isDashboardView = false, onBeforeSubscribe = null }) {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [submittingPlanId, setSubmittingPlanId] = useState(null);
@@ -33,14 +33,16 @@ function PricingSection({ isDashboardView = false }) {
   }, []);
 
   const handleSubscribe = async (stripePriceId) => {
+    if (onBeforeSubscribe && !onBeforeSubscribe()) {
+      return;
+    }
+
     try {
       setSubmittingPlanId(stripePriceId);
       const response = await createSubscription(stripePriceId);
 
-      // Твій контролер повертає: { data: { url, sessionId } }
       if (response?.data?.url) {
-        // Перенаправляємо користувача на захищену сторінку оплати Stripe Checkout
-        window.location.href = response.data.url;
+        window.location.assign(response.data.url);
       } else {
         alert("Не вдалося отримати посилання на оплату. Спробуйте пізніше.");
       }

@@ -86,7 +86,7 @@ function Dashboard() {
             </button>
             <button
               className={styles.secondaryBtn}
-              onClick={() => navigate("/profile/results")}
+              onClick={() => navigate("/attempt/history")}
             >
               <History size={18} />
               <span>Мої результати</span>

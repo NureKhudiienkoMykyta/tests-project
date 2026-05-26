@@ -1,0 +1,79 @@
+.subBlockLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 14px;
+}
+
+.answersList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.answerOptionRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.selectionControl {
+  width: 20px;
+  height: 20px;
+  accent-color: #4f46e5;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.flexInput {
+  flex-grow: 1;
+}
+
+.deleteAnswerOptionBtn {
+  background: #ffffff;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.deleteAnswerOptionBtn:hover {
+  background-color: #fee2e2;
+  border-color: #fca5a5;
+  color: #ef4444;
+}
+
+.addAnswerOptionBtn {
+  background: none;
+  border: none;
+  color: #4f46e5;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.15s ease;
+}
+
+.addAnswerOptionBtn:hover {
+  background-color: #eeebff;
+}
+
+.textualAnswerBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

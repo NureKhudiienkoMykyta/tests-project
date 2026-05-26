@@ -200,17 +200,12 @@ export const refreshTokenAccount = async (refreshToken) => {
     throw ApiError.unauthorized();
   }
 
-  console.log(refreshToken);
-
   const userData = validateRefreshToken(refreshToken);
   if (!userData) {
     throw ApiError.unauthorized();
   }
 
   const tokenFromDb = await findRefreshToken(userData.id, refreshToken);
-
-  console.log(userData);
-  console.log(tokenFromDb);
 
   if (!userData || !tokenFromDb) {
     throw ApiError.unauthorized();

@@ -1,0 +1,118 @@
+.questionsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sectionHeaderNoCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.sectionHeaderNoCard h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.iconTitle {
+  color: #4f46e5;
+}
+
+.questionCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.questionCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+}
+
+.questionNumber {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.deleteQuestionBtn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background-color 0.15s ease;
+}
+
+.deleteQuestionBtn:hover {
+  background-color: #fee2e2;
+}
+
+.questionMainForm {
+  display: grid;
+  grid-template-columns: 1fr 260px 100px;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+@media (max-width: 768px) {
+  .questionMainForm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.inputLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.select {
+  width: 100%;
+  height: 42px;
+  padding: 0 36px 0 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: #0f172a;
+  background-color: #ffffff;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.answersSectionWrapper {
+  margin-top: 24px;
+  background-color: #f8fafc;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}

@@ -85,6 +85,8 @@ export const startAttempt = async (testId, userId) => {
     }
   }
 
+  const totalQuestionsCount = test.questions.length;
+
   // Перевірити чи немає вже IN_PROGRESS спроби цього тесту
   const existingAttempt = await prisma.testAttempt.findFirst({
     where: {
@@ -115,6 +117,8 @@ export const startAttempt = async (testId, userId) => {
       (q) => !answeredIds.includes(q.id),
     );
 
+    const answeredCount = answeredIds.length;
+
     const questions = remainingQuestions.map((q) => ({
       id: q.id,
       type: q.type,
@@ -125,6 +129,8 @@ export const startAttempt = async (testId, userId) => {
 
     return {
       attempt_id: existingAttempt.id,
+      total_questions: totalQuestionsCount,
+      answered_count: answeredCount,
       questions,
       time_limit_seconds: test.time_limit_seccond,
       remaining_time_seconds: existingAttempt.expired_at
@@ -165,6 +171,8 @@ export const startAttempt = async (testId, userId) => {
 
   return {
     attempt_id: attempt.id,
+    total_questions: totalQuestionsCount,
+    answered_count: 0,
     questions,
     time_limit_seconds: test.time_limit_seccond,
   };
@@ -354,7 +362,13 @@ export const finishAttempt = async (attemptId, userId) => {
     },
     include: {
       attempt_answers: true,
-      test: true,
+      test: {
+        include: {
+          category: true,
+          author: true,
+          university: true,
+        },
+      },
     },
   });
 
@@ -369,6 +383,12 @@ const formatFinishResponse = (attempt) => {
     max_score: attempt.max_score,
     status: attempt.status,
     finished_at: attempt.finished_at,
+    description: attempt.test.description,
+    category: attempt.test.category,
+    university: attempt.test.university,
+    author: attempt.test.author,
+    time_limit_second: attempt.test.time_limit_seccond,
+    persentage: Math.round((attempt.score / attempt.max_score) * 100) || 0,
   };
 
   if (attempt.test.show_results === "ONLY_SCORE") {
@@ -431,20 +451,20 @@ export const getResultTest = async (attemptId, userId) => {
 
   const baseResult = {
     attempt_id: attempt.id,
-    test_title: attempt.test.title,
-    description: attempt.test.description,
+    test_title: attempt?.test?.title,
+    description: attempt.test?.description,
     score: attempt.score,
     max_score: attempt.max_score,
     status: attempt.status,
     finished_at: attempt.finished_at,
-    category: attempt.test.category,
-    university: attempt.test.university,
-    author: attempt.test.author,
-    time_limit_second: attempt.test.time_limit_seccond,
+    category: attempt.test?.category,
+    university: attempt.test?.university,
+    author: attempt.test?.author,
+    time_limit_second: attempt.test?.time_limit_seccond,
     persentage: Math.round((attempt.score / attempt.max_score) * 100) || 0,
   };
 
-  if (attempt.test.show_results === "ONLY_SCORE") {
+  if (attempt.test?.show_results === "ONLY_SCORE") {
     return baseResult;
   }
 
@@ -503,14 +523,14 @@ export const getHistoryAttempts = async (userId, limit = 20, page = 1) => {
 
   const formattedAttempts = myAttempts.map((attempt) => ({
     id: attempt.id,
-    title: attempt.test.title,
-    category: attempt.test.category,
-    university: attempt.test.university,
+    title: attempt?.test?.title,
+    category: attempt?.test?.category,
+    university: attempt?.test?.university,
     score: attempt.score,
     max_score: attempt.max_score,
     status: attempt.status,
     date: attempt.finished_at || attempt.started_at,
-    author: attempt.test.author,
+    author: attempt?.test?.author,
     persentage: Math.round((attempt.score / attempt.max_score) * 100) || 0,
   }));
 

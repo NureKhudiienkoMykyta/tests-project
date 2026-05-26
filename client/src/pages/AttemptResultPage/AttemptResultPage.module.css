@@ -1,0 +1,129 @@
+.pageWrapper {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* (GRID) */
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 0.5rem 0;
+}
+
+@media (min-width: 640px) {
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.statCard {
+  background-color: #ffffff;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.statIcon {
+  color: #ea580c;
+  flex-shrink: 0;
+}
+
+.statLabel {
+  display: block;
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-bottom: 0.15rem;
+  font-weight: 500;
+}
+
+.statValue {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* ДЕТАЛЬНІ РЕЗУЛЬТАТИ */
+.detailsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.questionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.onlyScoreNotice {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  color: #1e40af;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+.onlyScoreNotice p {
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.onlyScoreNotice svg {
+  flex-shrink: 0;
+  color: #3b82f6;
+}
+
+.deletedTestNotice {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  color: #64748b;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.deletedIcon {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
