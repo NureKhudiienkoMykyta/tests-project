@@ -1,29 +1,13 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendActivationMail = async (email, verifyToken) => {
-  transporter.verify((error, success) => {
-    if (error) {
-      console.log("SMTP ERROR:", error);
-    } else {
-      console.log("SMTP READY");
-    }
-  });
-
   try {
     const link = `${process.env.API_URL}/api/auth/verify/${verifyToken}`;
 
-    const info = await transporter.sendMail({
-      from: process.env.SMTP_USER,
+    const response = await resend.emails.send({
+      from: "onboarding@resend.dev",
       to: email,
       subject: `Активація акаунта на ${process.env.CLIENT_URL}`,
       html: `
@@ -34,8 +18,10 @@ export const sendActivationMail = async (email, verifyToken) => {
       `,
     });
 
-    console.log("Mail sent:", info.response);
+    console.log("EMAIL SENT:", response);
+    return response;
   } catch (error) {
-    console.error("MAIL ERROR:", error);
+    console.error("RESEND ERROR:", error);
+    throw error;
   }
 };
