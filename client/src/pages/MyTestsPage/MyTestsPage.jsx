@@ -115,7 +115,7 @@ function MyTestsPage() {
 
         {tests.length === 0 ? (
           <div className={styles.emptyState}>
-            <p>Ви ще не створили жодного тесту. Бажаєте спробувати? 🚀</p>
+            <p>Ви ще не створили жодного тесту. Бажаєте спробувати?</p>
             <button
               className={styles.createBtn}
               onClick={() => navigate("/test/create")}
