@@ -35,9 +35,6 @@ function AttempPage() {
 
   useEffect(() => {
     if (testResult) {
-      console.log("====================================");
-      console.log(testResult);
-      console.log("====================================");
       navigate(`/attempt/${testResult.data.attempt_id}/results`, {
         state: { result: testResult },
       });

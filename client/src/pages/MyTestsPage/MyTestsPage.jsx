@@ -117,7 +117,7 @@ function MyTestsPage() {
           <div className={styles.emptyState}>
             <p>Ви ще не створили жодного тесту. Бажаєте спробувати? 🚀</p>
             <button
-              className={styles.createBtnCenter}
+              className={styles.createBtn}
               onClick={() => navigate("/test/create")}
             >
               Створити перший тест
