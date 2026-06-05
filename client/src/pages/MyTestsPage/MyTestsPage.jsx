@@ -70,6 +70,9 @@ function MyTestsPage() {
     try {
       await deleteTest(id);
       setTests((prev) => prev.filter((t) => t.id !== id));
+      setPagination((prev) =>
+        prev ? { ...prev, total: prev.total - 1 } : null,
+      );
       handleDeleteClose();
     } catch (err) {
       alert(
