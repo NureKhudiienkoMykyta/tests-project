@@ -40,7 +40,7 @@ function Dashboard() {
         const [statsData, continueData, popularData] = await Promise.all([
           getUserDashboardStats(),
           getTestContinue(),
-          getTestPopular(10),
+          getTestPopular(9),
         ]);
 
         if (statsData) setStats(statsData.data);
